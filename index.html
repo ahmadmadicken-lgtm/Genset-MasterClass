@@ -23,19 +23,19 @@ h1,h2,h3,.display{font-family:'Syne',sans-serif}
 /* ── TOPBAR ── */
 #topbar{
   position:sticky;top:0;z-index:100;
-  background:rgba(13,13,15,.92);
+  background:rgba(13,13,15,.96);
   backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
 .topbar-inner{
   max-width:1200px;margin:0 auto;
-  padding:0 24px;
-  display:flex;align-items:center;gap:0;
-  overflow:hidden;
+  padding:0 20px;
+  display:flex;align-items:center;
+  height:54px;
 }
 .logo{
   display:flex;align-items:center;gap:10px;
-  padding:14px 0;flex-shrink:0;margin-right:24px;
+  flex-shrink:0;margin-right:20px;
 }
 .logo-icon{
   width:32px;height:32px;background:var(--orange);
@@ -45,20 +45,14 @@ h1,h2,h3,.display{font-family:'Syne',sans-serif}
 .logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.2px}
 .logo-text span{color:var(--orange)}
 
-/* Nav wrapper with right fade cue */
-.nav-wrap{
-  flex:1;min-width:0;position:relative;overflow:hidden;
-}
+/* Desktop nav */
+.nav-wrap{flex:1;min-width:0;position:relative;overflow:hidden;}
 .nav-wrap::after{
-  content:'';position:absolute;top:0;right:0;bottom:0;width:32px;
-  background:linear-gradient(to right,transparent,rgba(13,13,15,.95));
+  content:'';position:absolute;top:0;right:0;bottom:0;width:24px;
+  background:linear-gradient(to right,transparent,rgba(13,13,15,.96));
   pointer-events:none;z-index:2;
 }
-nav{
-  display:flex;overflow-x:auto;gap:0;scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-  scroll-behavior:smooth;
-}
+nav{display:flex;overflow-x:auto;gap:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
 nav::-webkit-scrollbar{display:none}
 .ntab{
   position:relative;padding:0 16px;height:54px;
@@ -77,6 +71,53 @@ nav::-webkit-scrollbar{display:none}
   content:'';position:absolute;bottom:0;left:16px;right:16px;
   height:2px;background:var(--orange);border-radius:2px 2px 0 0;
 }
+
+/* Hamburger button */
+.hamburger{
+  display:none;margin-left:auto;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:8px;padding:8px 10px;cursor:pointer;
+  flex-direction:column;gap:4px;flex-shrink:0;
+  transition:background .15s;
+}
+.hamburger:hover{background:var(--s3)}
+.hamburger span{
+  display:block;width:18px;height:2px;
+  background:var(--muted);border-radius:2px;
+  transition:all .25s;transform-origin:center;
+}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+/* Mobile dropdown */
+#mobile-nav{
+  display:none;
+  position:absolute;top:100%;left:0;right:0;z-index:99;
+  background:rgba(13,13,15,.98);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(16px);
+  padding:8px 16px 14px;
+  flex-direction:column;gap:2px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+  animation:dropIn .2s ease-out;
+}
+#mobile-nav.open{display:flex}
+@keyframes dropIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.mntab{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:10px;
+  font-family:'Syne',sans-serif;font-weight:600;font-size:14px;
+  letter-spacing:.3px;text-transform:uppercase;
+  color:var(--muted);background:none;border:none;cursor:pointer;
+  text-align:left;width:100%;transition:all .15s;
+}
+.mntab:hover{background:var(--s2);color:var(--text)}
+.mntab.active{background:rgba(255,87,34,.1);color:var(--orange)}
+.mntab svg{flex-shrink:0;opacity:.7}
+.mntab.active svg{opacity:1;stroke:var(--orange)}
+.mntab-label{flex:1}
+.mntab-arrow{font-size:12px;color:var(--dim)}
 
 /* ── MAIN ── */
 main{max-width:1200px;margin:0 auto;padding:32px 24px 80px}
@@ -325,16 +366,19 @@ label.lbl{
 /* ── RESPONSIVE ── */
 @media(max-width:640px){
   main{padding:20px 16px 60px}
-  .topbar-inner{padding:0 10px}
-  .logo{margin-right:0;padding:10px 0;gap:7px}
-  .logo-icon{width:26px;height:26px;border-radius:5px}
-  .logo-icon svg{width:13px;height:13px}
-  .logo-text{font-size:13px}
+  .topbar-inner{padding:0 14px}
+  .logo{margin-right:0}
+  .logo-text{font-size:14px}
   .logo-byline{display:none}
-  .ntab{padding:0 10px;font-size:11px;gap:4px;height:46px}
-  .ntab svg{width:12px;height:12px}
   .result-num{font-size:34px}
   .sec-title{font-size:26px}
+  /* Show hamburger, hide desktop nav */
+  .hamburger{display:flex}
+  #desktop-nav-wrap{display:none}
+  /* Stack grids on mobile */
+  .g2{grid-template-columns:1fr}
+  .g3{grid-template-columns:1fr 1fr}
+  .g4{grid-template-columns:1fr 1fr}
 }
 /* logo byline class */
 .logo-byline{font-size:10px;color:var(--dim);letter-spacing:.3px;margin-top:-2px}
@@ -407,8 +451,9 @@ label.lbl{
 <body>
 
 <!-- TOPBAR -->
-<header id="topbar">
+<header id="topbar" style="position:relative">
 <div class="topbar-inner">
+  <!-- Logo -->
   <div class="logo">
     <div class="logo-icon">
       <svg width="17" height="17" fill="white" viewBox="0 0 24 24"><path d="M13 2L4.09 12.97 12 12l-1 8 8.91-10.97L12 10l1-8z"/></svg>
@@ -418,27 +463,55 @@ label.lbl{
       <div class="logo-byline">by <a href="https://cekgensetgratis.online" target="_blank" rel="noopener" style="color:inherit;text-decoration:none" onmouseover="this.style.color='var(--orange)'" onmouseout="this.style.color='inherit'">cekgensetgratis.online</a></div>
     </div>
   </div>
-  <div class="nav-wrap">
-    <nav>
-      <button class="ntab active" onclick="showTab('anatomy',this)">
+  <!-- Desktop nav -->
+  <div class="nav-wrap" id="desktop-nav-wrap">
+    <nav id="desktop-nav">
+      <button class="ntab active" id="dt-anatomy" onclick="showTab('anatomy',this)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
         Anatomi
       </button>
-      <button class="ntab" onclick="showTab('simulator',this)">
+      <button class="ntab" id="dt-simulator" onclick="showTab('simulator',this)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
         Simulator
       </button>
-      <button class="ntab" onclick="showTab('kalkulator',this)">
+      <button class="ntab" id="dt-kalkulator" onclick="showTab('kalkulator',this)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
         Kalkulator
       </button>
-      <button class="ntab" onclick="showTab('exam',this)">
+      <button class="ntab" id="dt-exam" onclick="showTab('exam',this)">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         Exam
       </button>
     </nav>
   </div>
+  <!-- Hamburger button (mobile only) -->
+  <button class="hamburger" id="hamburger-btn" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </div>
+<!-- Mobile dropdown nav -->
+<nav id="mobile-nav">
+  <button class="mntab active" id="mn-anatomy" onclick="showTab('anatomy',null,'anatomy')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+    <span class="mntab-label">Anatomi Genset</span>
+    <span class="mntab-arrow">›</span>
+  </button>
+  <button class="mntab" id="mn-simulator" onclick="showTab('simulator',null,'simulator')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+    <span class="mntab-label">Simulator Wet Stacking</span>
+    <span class="mntab-arrow">›</span>
+  </button>
+  <button class="mntab" id="mn-kalkulator" onclick="showTab('kalkulator',null,'kalkulator')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+    <span class="mntab-label">Kalkulator (12 Tools)</span>
+    <span class="mntab-arrow">›</span>
+  </button>
+  <button class="mntab" id="mn-exam" onclick="showTab('exam',null,'exam')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    <span class="mntab-label">Exam Center</span>
+    <span class="mntab-arrow">›</span>
+  </button>
+</nav>
 </header>
 
 <main>
@@ -1366,16 +1439,51 @@ label.lbl{
 
 <script>
 // ══════════════════════ TABS ══════════════════════
-function showTab(name,btn){
+function showTab(name, btn, mobileKey) {
   ['anatomy','simulator','kalkulator','exam'].forEach(t=>{
-    document.getElementById('tab-'+t).style.display=t===name?'block':'none';
+    document.getElementById('tab-'+t).style.display = t===name ? 'block' : 'none';
   });
-  document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  // Scroll active tab into view on mobile
-  btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
-  if(name==='kalkulator') closeCalc();
+  // Update desktop nav
+  document.querySelectorAll('.ntab').forEach(b => b.classList.remove('active'));
+  const dtBtn = document.getElementById('dt-'+name);
+  if (dtBtn) dtBtn.classList.add('active');
+  // Update mobile nav
+  document.querySelectorAll('.mntab').forEach(b => b.classList.remove('active'));
+  const mnBtn = document.getElementById('mn-'+name);
+  if (mnBtn) mnBtn.classList.add('active');
+  // Close mobile menu after selection
+  closeMobileNav();
+  if (name==='kalkulator') closeCalc();
+  // Scroll to top of content
+  window.scrollTo({top:0, behavior:'smooth'});
 }
+
+function toggleMobileNav() {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('hamburger-btn');
+  const isOpen = nav.classList.contains('open');
+  if (isOpen) {
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+  } else {
+    nav.classList.add('open');
+    btn.classList.add('open');
+  }
+}
+
+function closeMobileNav() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+}
+
+// Close mobile nav when clicking outside
+document.addEventListener('click', function(e){
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('hamburger-btn');
+  if (nav && btn && !nav.contains(e.target) && !btn.contains(e.target)) {
+    closeMobileNav();
+  }
+});
 
 // ══════════════════════ ANATOMY MODAL ══════════════════════
 const compData={
@@ -2634,13 +2742,15 @@ function showResult(){
         </div>
         <p style="font-size:13px;color:var(--muted);line-height:1.7;max-width:340px">Platform edukasi genset paling lengkap di Indonesia &mdash; dari teori dasar hingga kalkulator profesional dan sertifikasi digital.</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;min-width:220px">
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0;width:100%;max-width:320px">
         <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)">Dibuat &amp; Dipersembahkan oleh</div>
-        <a href="https://cekgensetgratis.online" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,87,34,.1);border:1px solid rgba(255,87,34,.3);border-radius:10px;padding:14px 18px;text-decoration:none" onmouseover="this.style.background='rgba(255,87,34,.18)'" onmouseout="this.style.background='rgba(255,87,34,.1)'">
-          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#ff5722" stroke-width="2"><path d="M13 2L4.09 12.97 12 12l-1 8 8.91-10.97L12 10l1-8z"/></svg>
-          <div>
-            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:var(--orange)">cekgensetgratis.online</div>
-            <div style="font-size:12px;color:var(--muted)">Konsultasi &amp; Penawaran Genset &mdash; 100% Gratis</div>
+        <a href="https://cekgensetgratis.online" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:10px;background:rgba(255,87,34,.1);border:1px solid rgba(255,87,34,.3);border-radius:10px;padding:14px 16px;text-decoration:none;overflow:hidden;max-width:100%" onmouseover="this.style.background='rgba(255,87,34,.18)'" onmouseout="this.style.background='rgba(255,87,34,.1)'">
+          <div style="flex-shrink:0;width:36px;height:36px;background:rgba(255,87,34,.15);border-radius:8px;display:flex;align-items:center;justify-content:center">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#ff5722" stroke-width="2"><path d="M13 2L4.09 12.97 12 12l-1 8 8.91-10.97L12 10l1-8z"/></svg>
+          </div>
+          <div style="min-width:0;flex:1">
+            <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--orange);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">cekgensetgratis.online</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Konsultasi &amp; Penawaran Genset &mdash; 100% Gratis</div>
           </div>
         </a>
         <a href="https://cekgensetgratis.online" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--orange);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;letter-spacing:.4px;text-transform:uppercase;padding:12px 20px;border-radius:8px;text-decoration:none" onmouseover="this.style.background='var(--orange2)'" onmouseout="this.style.background='var(--orange)'">
